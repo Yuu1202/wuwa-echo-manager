@@ -1,0 +1,509 @@
+/* ============================================================
+   style.css — WuWa Echo Manager
+   Tema: dark industrial, game HUD aesthetic
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   RESET & BASE
+   ---------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #0b0d11;
+  --bg-panel:   #10131a;
+  --bg-input:   #181c26;
+  --bg-hover:   #1e2333;
+  --border:     #2a2f40;
+  --border-accent: #3d4a6a;
+
+  --text:       #c8d0e0;
+  --text-dim:   #5a6278;
+  --text-bright:#e8edf8;
+
+  --accent:     #4fc3f7;
+  --accent-dim: #1a3a4a;
+  --gold:       #f0c060;
+  --gold-dim:   #3a2c10;
+  --red:        #e05555;
+  --red-dim:    #2a1010;
+  --green:      #5fcf8a;
+
+  --rank1:      #f0c060;
+  --rank2:      #a0b8d0;
+  --rank3:      #cd7f45;
+
+  --font-ui:    'Rajdhani', sans-serif;
+  --font-mono:  'Share Tech Mono', monospace;
+
+  --radius:     4px;
+  --gap:        16px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ----------------------------------------------------------
+   SCROLLBAR
+   ---------------------------------------------------------- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 3px; }
+
+/* ----------------------------------------------------------
+   HEADER
+   ---------------------------------------------------------- */
+header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.08em;
+}
+
+.logo-accent { color: var(--accent); margin-right: 4px; }
+.logo-dim    { color: var(--text-dim); }
+
+.header-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------
+   LAYOUT — 3 kolom
+   ---------------------------------------------------------- */
+main {
+  display: grid;
+  grid-template-columns: 260px 1fr 340px;
+  gap: 0;
+  height: calc(100vh - 53px);
+  overflow: hidden;
+}
+
+.panel {
+  overflow-y: auto;
+  padding: var(--gap);
+  border-right: 1px solid var(--border);
+}
+
+.panel-right { border-right: none; }
+
+/* ----------------------------------------------------------
+   SECTION BLOCK
+   ---------------------------------------------------------- */
+.section-block {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-note {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-weight: 400;
+  font-family: var(--font-ui);
+  letter-spacing: 0.05em;
+}
+
+.section-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+/* ----------------------------------------------------------
+   INPUTS & SELECTS
+   ---------------------------------------------------------- */
+input, select {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus, select:focus {
+  border-color: var(--accent);
+}
+
+input::placeholder { color: var(--text-dim); }
+
+select option {
+  background: var(--bg-panel);
+  color: var(--text);
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.input-group       { margin-bottom: 10px; }
+.input-group.full  { width: 100%; }
+.input-group.grow  { flex: 1; }
+
+/* ----------------------------------------------------------
+   BASE STAT DISPLAY
+   ---------------------------------------------------------- */
+.base-stat-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.base-stat-display span {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.base-stat-display span b {
+  color: var(--text-bright);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+/* ----------------------------------------------------------
+   WEIGHT PANEL
+   ---------------------------------------------------------- */
+.weight-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weight-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 28px;
+  align-items: center;
+  gap: 8px;
+}
+
+.weight-label {
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.weight-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border: none;
+  border-radius: 2px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.weight-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.weight-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  text-align: right;
+}
+
+.muted {
+  color: var(--text-dim);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------
+   ECHO FORM
+   ---------------------------------------------------------- */
+.echo-form { display: flex; flex-direction: column; gap: 0; }
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.substat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin: 12px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.substat-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 28px;
+  gap: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.substat-row select,
+.substat-row input {
+  margin: 0;
+}
+
+/* ----------------------------------------------------------
+   BUTTONS
+   ---------------------------------------------------------- */
+.btn-primary, .btn-danger, .btn-ghost, .btn-remove-sub, .btn-delete-echo {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  padding: 9px 20px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.btn-primary:hover { background: #80d8ff; }
+
+.btn-danger {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 9px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.btn-danger:hover { background: var(--red-dim); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 10px;
+  font-size: 11px;
+}
+.btn-ghost:hover { background: var(--accent-dim); }
+
+.btn-remove-sub, .btn-delete-echo {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  padding: 0;
+}
+.btn-remove-sub:hover, .btn-delete-echo:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* ----------------------------------------------------------
+   RANKING
+   ---------------------------------------------------------- */
+.ranking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ranking-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-ghost-small {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 3px 8px;
+  font-size: 10px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.btn-ghost-small:hover { background: var(--accent-dim); }
+
+#ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.echo-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.echo-card:hover { border-color: var(--border-accent); }
+
+.echo-card.rank-first  { border-left: 3px solid var(--rank1); }
+.echo-card.rank-second { border-left: 3px solid var(--rank2); }
+.echo-card.rank-third  { border-left: 3px solid var(--rank3); }
+.echo-card.rank-rest   { border-left: 3px solid var(--border); }
+
+.echo-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.rank-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 24px;
+  color: var(--text-dim);
+}
+
+.echo-card.rank-first  .rank-badge { color: var(--rank1); }
+.echo-card.rank-second .rank-badge { color: var(--rank2); }
+.echo-card.rank-third  .rank-badge { color: var(--rank3); }
+
+.echo-card-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-bright);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.echo-score {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+  min-width: 50px;
+  text-align: right;
+}
+
+.score-bar-wrap {
+  height: 3px;
+  background: var(--bg-input);
+}
+
+.score-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.echo-card.rank-first  .score-bar { background: var(--rank1); }
+.echo-card.rank-second .score-bar { background: var(--rank2); }
+.echo-card.rank-third  .score-bar { background: var(--rank3); }
+
+.echo-breakdown {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.breakdown-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 70px 60px;
+  font-size: 12px;
+  gap: 6px;
+  align-items: center;
+}
+
+.breakdown-row.dimmed { opacity: 0.35; }
+
+.b-name  { color: var(--text); }
+.b-value { font-family: var(--font-mono); color: var(--text-bright); text-align: right; }
+.b-eff   { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); text-align: right; }
+.b-score { font-family: var(--font-mono); font-size: 11px; color: var(--green); text-align: right; }
+.breakdown-row.dimmed .b-score { color: var(--text-dim); }
+
+/* ----------------------------------------------------------
+   RESPONSIVE hint (personal tool, tidak wajib)
+   ---------------------------------------------------------- */
+@media (max-width: 1100px) {
+  main {
+    grid-template-columns: 220px 1fr 300px;
+  }
+}

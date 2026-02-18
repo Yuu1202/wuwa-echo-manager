@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WuWa Echo Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-accent">◈</span>
+        ECHO<span class="logo-dim">MANAGER</span>
+      </div>
+      <p class="header-sub">Wuthering Waves — Substat Analyzer</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ KOLOM KIRI ============ -->
+    <aside class="panel panel-left">
+
+      <!-- Karakter -->
+      <section class="section-block">
+        <h2 class="section-title">KARAKTER</h2>
+        <select id="char-select"></select>
+        <div id="base-stat-display" class="base-stat-display"></div>
+      </section>
+
+      <!-- Weight -->
+      <section class="section-block">
+        <h2 class="section-title">STAT WEIGHT</h2>
+        <p class="section-hint">0.0 = tidak berguna &nbsp;·&nbsp; 1.0 = prioritas</p>
+        <div id="weight-panel" class="weight-panel"></div>
+      </section>
+
+    </aside>
+
+    <!-- ============ KOLOM TENGAH ============ -->
+    <section class="panel panel-center">
+
+      <h2 class="section-title">TAMBAH ECHO</h2>
+
+      <div class="echo-form">
+
+        <div class="form-row">
+          <div class="input-group full">
+            <label>Nama Echo <span class="title-note">(opsional)</span></label>
+            <input type="text" id="echo-name" placeholder="cth. Thundering Mephis" />
+          </div>
+        </div>
+
+        <div class="substat-header">
+          <span>SUBSTAT</span>
+          <button id="btn-add-substat" class="btn-ghost">+ Tambah</button>
+        </div>
+        <div id="substat-rows"></div>
+
+        <div class="form-actions">
+          <button id="btn-add-echo" class="btn-primary">TAMBAH ECHO</button>
+          <button id="btn-clear-all" class="btn-danger">HAPUS SEMUA</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============ KOLOM KANAN ============ -->
+    <section class="panel panel-right">
+      <div class="ranking-header">
+        <h2 class="section-title">RANKING</h2>
+        <div class="ranking-actions">
+          <button id="btn-export-json" class="btn-ghost-small" title="Export ke JSON">↓ JSON</button>
+          <button id="btn-import-json" class="btn-ghost-small" title="Import dari JSON">↑ JSON</button>
+          <input type="file" id="file-import" accept=".json" style="display:none;" />
+        </div>
+      </div>
+      <div id="ranking-list"></div>
+    </section>
+
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
