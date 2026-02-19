@@ -23,6 +23,8 @@ const STORAGE_KEY = "wuwa-echo-manager-state";
 function saveState() {
   const data = {
     echoList: state.echoList,
+    weights: state.weights,
+    selectedCharacterId: state.selectedCharacter?.id || null,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -33,6 +35,19 @@ function loadState() {
     try {
       const data = JSON.parse(stored);
       state.echoList = data.echoList || {};
+      
+      // Restore selected character and weights
+      if (data.selectedCharacterId) {
+        const char = CHARACTERS.find((c) => c.id === data.selectedCharacterId);
+        if (char) {
+          state.selectedCharacter = char;
+          state.weights = data.weights || { ...char.defaultWeight };
+          
+          // Set the select element
+          const select = document.getElementById("char-select");
+          if (select) select.value = char.id;
+        }
+      }
     } catch (e) {
       console.error("Failed to load state:", e);
     }
@@ -92,9 +107,10 @@ function getCurrentEchoList() {
 // INIT
 // ----------------------------------------------------------
 export function initUI() {
-  loadState();
   renderCharacterSelect();
+  loadState();
   renderWeightPanel();
+  renderBaseStatDisplay();
   renderEchoForm();
   renderRanking();
 
@@ -133,6 +149,7 @@ function renderCharacterSelect() {
     renderWeightPanel();
     renderBaseStatDisplay();
     renderRanking();
+    saveState();
   });
 }
 
@@ -188,6 +205,7 @@ function renderWeightPanel() {
       const val = parseFloat(e.target.value);
       state.weights[key] = val;
       document.getElementById(`wv-${key.replace(/[^a-z0-9]/gi, "_")}`).textContent = val.toFixed(1);
+      saveState();
       renderRanking();
     });
   });
