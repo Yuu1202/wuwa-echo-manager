@@ -11,7 +11,7 @@ import { calcEchoScoreBreakdown, rankEchoes } from "./calculator.js";
 // ----------------------------------------------------------
 let state = {
   selectedCharacter: null,  // object dari CHARACTERS
-  weights: {},              // { [statName]: 0.0 - 1.0 }
+  weights: {},              // { [characterId]: { [statName]: 0.0 - 1.0 } }
   echoList: {},             // { [characterId]: [echo objects] }
 };
 
@@ -22,9 +22,8 @@ const STORAGE_KEY = "wuwa-echo-manager-state";
 
 function saveState() {
   const data = {
-    echoList: state.echoList,
     weights: state.weights,
-    selectedCharacterId: state.selectedCharacter?.id || null,
+    echoList: state.echoList,
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -34,20 +33,8 @@ function loadState() {
   if (stored) {
     try {
       const data = JSON.parse(stored);
+      state.weights = data.weights || {};
       state.echoList = data.echoList || {};
-      
-      // Restore selected character and weights
-      if (data.selectedCharacterId) {
-        const char = CHARACTERS.find((c) => c.id === data.selectedCharacterId);
-        if (char) {
-          state.selectedCharacter = char;
-          state.weights = data.weights || { ...char.defaultWeight };
-          
-          // Set the select element
-          const select = document.getElementById("char-select");
-          if (select) select.value = char.id;
-        }
-      }
     } catch (e) {
       console.error("Failed to load state:", e);
     }
@@ -145,11 +132,17 @@ function renderCharacterSelect() {
   select.addEventListener("change", () => {
     const char = CHARACTERS.find((c) => c.id === select.value);
     state.selectedCharacter = char || null;
-    state.weights = char ? { ...char.defaultWeight } : {};
+    
+    if (char) {
+      // Load saved weights or use default
+      if (!state.weights[char.id]) {
+        state.weights[char.id] = { ...char.defaultWeight };
+      }
+    }
+    
     renderWeightPanel();
     renderBaseStatDisplay();
     renderRanking();
-    saveState();
   });
 }
 
@@ -184,8 +177,11 @@ function renderWeightPanel() {
     return;
   }
 
+  const charId = state.selectedCharacter.id;
+  const charWeights = state.weights[charId] || {};
+
   SUBSTAT_KEYS.forEach((key) => {
-    const currentWeight = state.weights[key] ?? 0;
+    const currentWeight = charWeights[key] ?? 0;
     const wrap = document.createElement("div");
     wrap.className = "weight-row";
     wrap.innerHTML = `
@@ -203,7 +199,8 @@ function renderWeightPanel() {
 
     wrap.querySelector("input").addEventListener("input", (e) => {
       const val = parseFloat(e.target.value);
-      state.weights[key] = val;
+      const charId = state.selectedCharacter.id;
+      state.weights[charId][key] = val;
       document.getElementById(`wv-${key.replace(/[^a-z0-9]/gi, "_")}`).textContent = val.toFixed(1);
       saveState();
       renderRanking();
@@ -393,7 +390,10 @@ export function renderRanking() {
     return;
   }
 
-  const ranked = rankEchoes(echoList, state.weights);
+  const charId = state.selectedCharacter.id;
+  const charWeights = state.weights[charId] || {};
+
+  const ranked = rankEchoes(echoList, charWeights);
   const maxScore = ranked[0]?.totalScore || 1;
 
   ranked.forEach((echo, idx) => {
