@@ -47,20 +47,47 @@
 
       <h2 class="section-title">TAMBAH ECHO</h2>
 
+      <div class="input-mode-switch">
+        <button id="btn-mode-manual" class="mode-btn active">Manual</button>
+        <button id="btn-mode-json" class="mode-btn">JSON</button>
+      </div>
+
       <div class="echo-form">
 
-        <div class="form-row">
-          <div class="input-group full">
-            <label>Nama Echo <span class="title-note">(opsional)</span></label>
-            <input type="text" id="echo-name" placeholder="cth. Thundering Mephis" />
+        <!-- MANUAL MODE -->
+        <div id="manual-input-section">
+          <div class="form-row">
+            <div class="input-group full">
+              <label>Nama Echo <span class="title-note">(opsional)</span></label>
+              <input type="text" id="echo-name" placeholder="cth. Thundering Mephis" />
+            </div>
           </div>
+
+          <div class="substat-header">
+            <span>SUBSTAT</span>
+            <button id="btn-add-substat" class="btn-ghost">+ Tambah</button>
+          </div>
+          <div id="substat-rows"></div>
         </div>
 
-        <div class="substat-header">
-          <span>SUBSTAT</span>
-          <button id="btn-add-substat" class="btn-ghost">+ Tambah</button>
+        <!-- JSON MODE -->
+        <div id="json-input-section" style="display:none;">
+          <div class="json-template-info">
+            <details>
+              <summary>📋 Template JSON</summary>
+              <pre class="json-template">{
+  "name": "Thundering Mephis",
+  "substats": [
+    { "name": "Crit. Rate", "value": 8.4 },
+    { "name": "Crit. DMG", "value": 16.8 },
+    { "name": "ATK%", "value": 9.0 },
+    { "name": "Energy Regen", "value": 10.25 }
+  ]
+}</pre>
+            </details>
+          </div>
+          <textarea id="json-input" placeholder="Paste JSON di sini..." rows="12"></textarea>
         </div>
-        <div id="substat-rows"></div>
 
         <div class="form-actions">
           <button id="btn-add-echo" class="btn-primary">TAMBAH ECHO</button>

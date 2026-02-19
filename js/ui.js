@@ -196,6 +196,8 @@ function renderWeightPanel() {
 // ----------------------------------------------------------
 // ECHO FORM
 // ----------------------------------------------------------
+let inputMode = "manual"; // "manual" or "json"
+
 function renderEchoForm() {
   renderSubstatRows();
 
@@ -203,6 +205,23 @@ function renderEchoForm() {
     if (getSubstatRowCount() < 5) {
       addSubstatRow();
     }
+  });
+
+  // Mode switching
+  document.getElementById("btn-mode-manual").addEventListener("click", () => {
+    inputMode = "manual";
+    document.getElementById("manual-input-section").style.display = "block";
+    document.getElementById("json-input-section").style.display = "none";
+    document.getElementById("btn-mode-manual").classList.add("active");
+    document.getElementById("btn-mode-json").classList.remove("active");
+  });
+
+  document.getElementById("btn-mode-json").addEventListener("click", () => {
+    inputMode = "json";
+    document.getElementById("manual-input-section").style.display = "none";
+    document.getElementById("json-input-section").style.display = "block";
+    document.getElementById("btn-mode-manual").classList.remove("active");
+    document.getElementById("btn-mode-json").classList.add("active");
   });
 }
 
@@ -245,28 +264,66 @@ function onAddEcho() {
     return;
   }
 
-  const name = document.getElementById("echo-name").value.trim() || `Echo ${getCurrentEchoList().length + 1}`;
+  let name, substats;
 
-  // Kumpulkan substat
-  const rows     = document.querySelectorAll(".substat-row");
-  const substats = [];
-
-  rows.forEach((row) => {
-    const statName  = row.querySelector(".substat-name").value;
-    const statValue = parseFloat(row.querySelector(".substat-value").value);
-
-    if (statName && !isNaN(statValue) && statValue > 0) {
-      substats.push({ name: statName, value: statValue });
+  if (inputMode === "json") {
+    // JSON mode
+    const jsonText = document.getElementById("json-input").value.trim();
+    if (!jsonText) {
+      alert("Masukkan JSON dulu!");
+      return;
     }
-  });
 
-  if (substats.length === 0) {
-    alert("Masukkan minimal 1 substat.");
-    return;
+    try {
+      const data = JSON.parse(jsonText);
+      name = data.name || `Echo ${getCurrentEchoList().length + 1}`;
+      substats = data.substats || [];
+
+      // Validasi substats
+      if (!Array.isArray(substats) || substats.length === 0) {
+        alert("Format JSON salah: substats harus array dengan minimal 1 item.");
+        return;
+      }
+
+      // Validasi setiap substat
+      for (const sub of substats) {
+        if (!sub.name || typeof sub.value !== "number") {
+          alert("Format JSON salah: setiap substat harus punya 'name' (string) dan 'value' (number).");
+          return;
+        }
+      }
+
+    } catch (err) {
+      alert("JSON tidak valid! Periksa format.");
+      console.error(err);
+      return;
+    }
+
+  } else {
+    // Manual mode
+    name = document.getElementById("echo-name").value.trim() || `Echo ${getCurrentEchoList().length + 1}`;
+
+    // Kumpulkan substat
+    const rows = document.querySelectorAll(".substat-row");
+    substats = [];
+
+    rows.forEach((row) => {
+      const statName  = row.querySelector(".substat-name").value;
+      const statValue = parseFloat(row.querySelector(".substat-value").value);
+
+      if (statName && !isNaN(statValue) && statValue > 0) {
+        substats.push({ name: statName, value: statValue });
+      }
+    });
+
+    if (substats.length === 0) {
+      alert("Masukkan minimal 1 substat.");
+      return;
+    }
   }
 
   const echo = {
-    id:       Date.now(),
+    id: Date.now(),
     name,
     substats,
   };
@@ -279,6 +336,7 @@ function onAddEcho() {
 
 function resetEchoForm() {
   document.getElementById("echo-name").value = "";
+  document.getElementById("json-input").value = "";
   renderSubstatRows();
 }
 

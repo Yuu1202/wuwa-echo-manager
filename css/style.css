@@ -271,6 +271,96 @@ label {
 /* ----------------------------------------------------------
    ECHO FORM
    ---------------------------------------------------------- */
+.input-mode-switch {
+  display: flex;
+  gap: 0;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.mode-btn {
+  flex: 1;
+  background: var(--bg-input);
+  color: var(--text-dim);
+  border: none;
+  padding: 7px 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: #000;
+}
+
+.mode-btn:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.json-template-info {
+  margin-bottom: 10px;
+}
+
+.json-template-info details {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+}
+
+.json-template-info summary {
+  font-size: 11px;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.json-template-info summary:hover {
+  color: var(--text-bright);
+}
+
+.json-template {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  margin-top: 8px;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+#json-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 10px;
+  border-radius: var(--radius);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s;
+  line-height: 1.6;
+}
+
+#json-input:focus {
+  border-color: var(--accent);
+}
+
 .echo-form { display: flex; flex-direction: column; gap: 0; }
 
 .form-row {
